@@ -1,0 +1,68 @@
+{
+  "name": "claude-wrap-mcp",
+  "version": "0.1.0",
+  "description": "Model Context Protocol (MCP) server that lets agents spawn and drive Claude Code sessions via claude-wrap.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Alex Kaffetzakis <alex@kaffetzakis.com>",
+  "homepage": "https://github.com/Alex-Kaff/claude-wrap-mcp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alex-Kaff/claude-wrap-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Alex-Kaff/claude-wrap-mcp/issues"
+  },
+  "mcpName": "io.github.Alex-Kaff/claude-wrap-mcp",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "claude-code",
+    "agent",
+    "claude-wrap"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "claude-wrap-mcp": "./dist/index.js"
+  },
+  "main": "./dist/server.js",
+  "types": "./dist/server.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/index.js",
+    "inspect": "npx -y @modelcontextprotocol/inspector node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run clean && npm run build && npm run test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "claude-wrap": "^0.1.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "rimraf": "^5.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^2.0.0"
+  }
+}
