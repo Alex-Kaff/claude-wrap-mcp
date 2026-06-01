@@ -3,6 +3,10 @@ dist/
 *.log
 *.tsbuildinfo
 *.tgz
+*.tar.gz
 package-lock.json
 .DS_Store
 Thumbs.db
+
+# Local mcp-publisher CLI binary (downloaded ad hoc; not part of the package)
+mcp-publisher.exe

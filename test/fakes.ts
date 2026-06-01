@@ -6,13 +6,16 @@ const emptyState: SessionStateLite = {
   busy: false,
   mode: null,
   tokens: null,
+  effort: null,
   permissionPrompt: null,
   todoList: null,
   toolCalls: [],
+  remoteUrl: null,
 };
 
 export class FakeSession implements Session {
   readonly origin = "in-process" as const;
+  readonly pipeName: string;
   sent: SendInput[] = [];
   resolved: Array<"approve" | "deny"> = [];
   stopped = false;
@@ -25,6 +28,7 @@ export class FakeSession implements Session {
     readonly cwd: string,
     opts?: { state?: SessionStateLite; lines?: string[] },
   ) {
+    this.pipeName = `pipe-${sessionId}`;
     this.state = opts?.state ?? emptyState;
     this.lines = opts?.lines ?? [`hello from ${sessionId}`];
   }

@@ -54,12 +54,12 @@ export function registerAsk(server: McpServer, sessions: ISessionManager): void 
     {
       title: "Send raw input without waiting",
       description:
-        "Send raw input to a session and return immediately (do not wait for idle). Provide exactly one of: text (raw, no newline), line (text + Enter), or key (a named key such as enter, esc, up, down, tab, ctrl-c). Use this for long-running tasks, then poll with claude_status.",
+        "Send raw input to a session and return immediately (do not wait for idle). Provide exactly one of: text (raw, no newline), line (text + Enter), or key (a named key). Named keys include enter, esc, tab, shift-tab (cycles Claude's mode: normal → auto → accept-edits → plan), up, down, left, right, home, end, pageup, pagedown, backspace, delete, space, ctrl-a, ctrl-c, ctrl-d, ctrl-e, ctrl-l, ctrl-u. Use this for long-running tasks, then poll with claude_status.",
       inputSchema: {
         sessionId: sessionIdField,
         text: z.string().optional().describe("Raw text, sent verbatim (no newline)"),
         line: z.string().optional().describe("Text followed by Enter"),
-        key: z.string().optional().describe("Named key, e.g. enter, esc, tab, up, down, ctrl-c"),
+        key: z.string().optional().describe("Named key, e.g. enter, esc, tab, shift-tab, up, down, ctrl-c"),
       },
       annotations: {
         title: "Send raw input without waiting",

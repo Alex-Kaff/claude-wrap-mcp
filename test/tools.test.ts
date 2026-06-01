@@ -42,6 +42,15 @@ describe("claude-wrap-mcp tools", () => {
     expect(sessions.spawnCalls[0]).toMatchObject({ cwd: "/abs/project", label: "demo", model: "claude-opus-4-8" });
   });
 
+  it("claude_spawn forwards the headful flag", async () => {
+    const { client, sessions } = await connect(new FakeSessionManager());
+    await client.callTool({
+      name: "claude_spawn",
+      arguments: { cwd: "/abs/project", headful: false },
+    });
+    expect(sessions.spawnCalls[0]).toMatchObject({ cwd: "/abs/project", headful: false });
+  });
+
   it("claude_spawn rejects a relative cwd", async () => {
     const { client } = await connect(new FakeSessionManager());
     // The SDK surfaces input-schema validation failures as a resolved result

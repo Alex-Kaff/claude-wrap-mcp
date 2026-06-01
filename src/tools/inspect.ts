@@ -10,7 +10,10 @@ export function registerInspect(server: McpServer, sessions: ISessionManager): v
     {
       title: "Get parsed session state",
       description:
-        "Return the parsed state of a session: busy flag, mode, token count, any pending permission prompt, todo list, and visible tool calls.",
+        "Return the parsed state of a session: busy flag, mode (normal/auto/accept-edits/plan), token count, " +
+        "reasoning effort, any pending permission prompt (with its title, question, body and options — this also " +
+        "covers the startup 'trust this folder' dialog), todo list, visible tool calls, and the remote-control URL " +
+        "if active.",
       inputSchema: { sessionId: sessionIdField },
       outputSchema: sessionStateShape,
       annotations: { title: "Get parsed session state", readOnlyHint: true, openWorldHint: false },
