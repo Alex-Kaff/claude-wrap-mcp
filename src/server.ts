@@ -8,7 +8,7 @@ import { registerAllTools } from "./tools/index.js";
 
 export const SERVER_NAME = "claude-wrap";
 // Keep in sync with package.json version.
-export const SERVER_VERSION = "0.1.1";
+export const SERVER_VERSION = "0.1.2";
 
 export interface CreateServerDeps {
   sessions: ISessionManager;

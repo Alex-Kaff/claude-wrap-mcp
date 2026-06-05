@@ -11,6 +11,25 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   publishing / provenance.
 - ESLint + Prettier, `CONTRIBUTING.md`, `SECURITY.md`.
 
+## [0.1.2] - 2026-06-05
+
+Repairs headful / external session driving against Claude Code v2.1.165. Bumps
+the `claude-wrap` dependency to `^0.1.2` (clean child environment so spawned
+windows no longer hijack the launching agent's IDE). Backward compatible.
+
+### Fixed
+- **Headful / external sessions are drivable again.** `injectScript()` resolved
+  the `claude-wrap-inject` bin via `require.resolve("claude-wrap/package.json")`,
+  which throws `ERR_PACKAGE_PATH_NOT_EXPORTED` on Node's modern resolver because
+  claude-wrap's `exports` map doesn't expose `./package.json`. That exception
+  bubbled through every `runInject` call, so on **windowed** and **external**
+  sessions `claude_status` silently returned all-nulls (no mode/tokens/permission),
+  `claude_resolve_permission` failed, and `claude_send {key}` (e.g. `shift-tab`)
+  was a no-op — the bulk of "headful mode is junky". Now resolved via the
+  package's main entry (always exported) and its sibling `inject.js`. Verified
+  end-to-end against Claude Code v2.1.165 (spawn → status → key → permission →
+  approve → stop).
+
 ## [0.1.1] - 2026-06-01
 
 Depends on `claude-wrap@^0.1.1`, which repairs parsed-state detection against
@@ -73,6 +92,7 @@ Initial release.
 - ESM build via `tsup` (bin with `#!/usr/bin/env node` shebang + `.d.ts`);
   Vitest suite driving the server over an in-memory MCP client.
 
-[Unreleased]: https://github.com/Alex-Kaff/claude-wrap-mcp/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/Alex-Kaff/claude-wrap-mcp/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/Alex-Kaff/claude-wrap-mcp/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/Alex-Kaff/claude-wrap-mcp/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/Alex-Kaff/claude-wrap-mcp/releases/tag/v0.1.0

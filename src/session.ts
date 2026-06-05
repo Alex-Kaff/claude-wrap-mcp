@@ -203,10 +203,23 @@ export class InProcessSession implements Session {
 
 const require = createRequire(import.meta.url);
 
-/** Absolute path to the installed claude-wrap `inject` entry. */
+/**
+ * Absolute path to the installed claude-wrap `inject` entry.
+ *
+ * Resolved via the package's main entry (always present in its `exports` map)
+ * and the sibling `inject.js`, NOT via `require.resolve("claude-wrap/package.json")`:
+ * claude-wrap's `exports` map doesn't expose `./package.json`, so that throws
+ * ERR_PACKAGE_PATH_NOT_EXPORTED on Node's modern resolver. That exception used
+ * to bubble through every `runInject` call and silently break `status()`,
+ * `resolvePermission()` and key sends for all pipe-driven (headful + external)
+ * sessions. `inject.js` sits next to the main entry (both under `dist/`).
+ */
+let cachedInjectScript: string | undefined;
 function injectScript(): string {
-  const pkgJson = require.resolve("claude-wrap/package.json");
-  return path.join(path.dirname(pkgJson), "dist", "inject.js");
+  if (cachedInjectScript) return cachedInjectScript;
+  const mainEntry = require.resolve("claude-wrap");
+  cachedInjectScript = path.join(path.dirname(mainEntry), "inject.js");
+  return cachedInjectScript;
 }
 
 function runInject(
